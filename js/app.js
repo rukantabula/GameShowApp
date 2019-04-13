@@ -24,27 +24,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const selectAllItems = (parent, item) => parent.querySelectorAll(item);
 
   const looperAction = {
-    addPhrase: (charArr, i) => {
+    addPhrase: element => {
       const li = document.createElement("li");
-      const char = document.createTextNode(charArr[i]);
+      const char = document.createTextNode(element);
       li.appendChild(char);
       ul.appendChild(li);
-      charArr[i] !== " "
-        ? li.classList.add("letter")
-        : li.classList.add("space");
+      element !== " " ? li.classList.add("letter") : li.classList.add("space");
     },
-    refillTries: (tries, i) => (tries[i].style.opacity = "1"),
-    hideTries: (tries, i) => (tries[i].style.opacity = "0"),
-    clearInput: (ulToClear, i) => {
-      ulToClear[i].textContent = "";
-      ulToClear[i].className = "";
+    refillTries: element => (element.style.opacity = "1"),
+    hideTries: element => (element.style.opacity = "0"),
+    clearInput: element => {
+      element.textContent = "";
+      element.className = "";
+    },
+    resetKeys: element => {
+      element.className = "";
     }
   };
 
   const looper = (arr, action) => {
-    for (let i = 0; i < arr.length; i++) {
-      looperAction[action](arr, i);
-    }
+    arr.forEach(element => {
+      looperAction[action](element);
+    });
   };
 
   const addPhraseToDisplay = charArr => {
@@ -56,11 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const checkLetter = key => {
     let letterFound;
     const letterArr = selectAllItems(ul, ".letter");
-    for (let i = 0; i < letterArr.length; i++) {
-      isMatch = letterArr[i].textContent.toLowerCase() == key;
-      isMatch ? letterArr[i].classList.add("show") : null;
+    letterArr.forEach(element => {
+      isMatch = element.textContent.toLowerCase() == key;
+      isMatch ? element.classList.add("show") : null;
       letterFound = letterFound || isMatch;
-    }
+    });
+
     return letterFound;
   };
 
@@ -73,6 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
   qwerty.addEventListener("click", e => {
     if (e.target.tagName == "BUTTON") {
       const char = e.target.textContent;
+      e.target.className = "chosen";
 
       if (!prevSelected.includes(char)) {
         prevSelected.push(char);
@@ -80,7 +83,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const clearInput = () => {
           const ulToClear = selectAllItems(ul, ".letter");
+          const keysToClear = selectAllItems(qwerty, "button");
           looper(ulToClear, "clearInput");
+          looper(keysToClear, "resetKeys");
           missed = 0;
         };
 
@@ -92,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
           clearInput();
           looper(selectAllItems(ol, ".tries"), "hideTries");
           addPhraseToDisplay(getRandomPhraseAsArray(phrases));
-          prevSelected = []
+          prevSelected = [];
         };
 
         if (!letterFound) {
