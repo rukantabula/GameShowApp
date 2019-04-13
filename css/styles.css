@@ -95,6 +95,17 @@ button {
 .show {
   color: #000;
   background-color: #76CE82;
+  transition: background-color 1s ease-in-out;
+  animation: color-me-in 1s;
+}
+
+@keyframes color-me-in {
+  0% {
+    background-color: greenyellow;
+  }
+  100% {
+    background-color: #76CE82;
+  }
 }
 
 /* Keyboard */
@@ -118,6 +129,7 @@ button {
   border-radius: 5px;
   font-size: var(--font-size-medium);
 }
+
 
 /* Overlay */
 
