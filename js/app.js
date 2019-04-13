@@ -35,10 +35,10 @@ document.addEventListener("DOMContentLoaded", () => {
     hideTries: element => (element.style.opacity = "0"),
     clearInput: element => {
       element.textContent = "";
-      element.classList.add("");
+      element.className = "";
     },
     resetKeys: element => {
-      element.classList.add("");
+      element.className = "";
     }
   };
 
