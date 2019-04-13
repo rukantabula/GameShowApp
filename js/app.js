@@ -29,40 +29,34 @@ document.addEventListener("DOMContentLoaded", () => {
       const char = document.createTextNode(element);
       li.appendChild(char);
       ul.appendChild(li);
-      element !== " " ? li.classList.add("letter") : li.classList.add("space");
+      li.classList.add(element !== " " ? "letter" : "space");
     },
     refillTries: element => (element.style.opacity = "1"),
     hideTries: element => (element.style.opacity = "0"),
     clearInput: element => {
       element.textContent = "";
-      element.className = "";
+      element.classList.add("");
     },
     resetKeys: element => {
-      element.className = "";
+      element.classList.add("");
     }
   };
 
   const looper = (arr, action) => {
-    arr.forEach(element => {
-      looperAction[action](element);
-    });
+    arr.forEach(element => looperAction[action](element));
   };
 
-  const addPhraseToDisplay = charArr => {
-    looper(charArr, "addPhrase");
-  };
+  const addPhraseToDisplay = charArr => looper(charArr, "addPhrase");
 
   addPhraseToDisplay(getRandomPhraseAsArray(phrases));
 
   const checkLetter = key => {
     let letterFound;
-    const letterArr = selectAllItems(ul, ".letter");
-    letterArr.forEach(element => {
+    selectAllItems(ul, ".letter").forEach(element => {
       isMatch = element.textContent.toLowerCase() == key;
       isMatch ? element.classList.add("show") : null;
       letterFound = letterFound || isMatch;
     });
-
     return letterFound;
   };
 
@@ -82,10 +76,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const letterFound = checkLetter(char);
 
         const clearInput = () => {
-          const ulToClear = selectAllItems(ul, ".letter");
-          const keysToClear = selectAllItems(qwerty, "button");
-          looper(ulToClear, "clearInput");
-          looper(keysToClear, "resetKeys");
+          looper(selectAllItems(ul, ".letter"), "clearInput");
+          looper(selectAllItems(qwerty, "button"), "resetKeys");
           missed = 0;
         };
 
@@ -122,8 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   startButton.addEventListener("click", () => {
-    const tries = selectAllItems(ol, ".tries");
-    looper(tries, "refillTries");
+    looper(selectAllItems(ol, ".tries"), "refillTries");
     styleOverlayDiv("", "none", "");
   });
 });
