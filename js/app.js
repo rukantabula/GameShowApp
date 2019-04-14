@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const getRandomPhraseAsArray = arr =>
     arr[Math.floor(Math.random() * arr.length)].split("");
 
-  const selectAllItems = (parent, item) => parent.querySelectorAll(item);
+  const SelectItems = (parent, item) => parent.querySelectorAll(item);
 
   const looperAction = {
     addPhrase: element => {
@@ -29,17 +29,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const char = document.createTextNode(element);
       li.appendChild(char);
       ul.appendChild(li);
-      li.classList.add(element !== " " ? "letter" : "space");
+      li.classList.add(element == " " ? "space" : "letter");
     },
     refillTries: element => (element.style.opacity = "1"),
     hideTries: element => (element.style.opacity = "0"),
-    clearInput: element => {
-      element.textContent = "";
-      element.className = "";
-    },
-    resetKeys: element => {
-      element.className = "";
-    }
+    resetKeys: element => (element.className = ""),
+    clearInput: element => element.parentNode.removeChild(element)
   };
 
   const looper = (arr, action) => {
@@ -52,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const checkLetter = key => {
     let letterFound;
-    selectAllItems(ul, ".letter").forEach(element => {
+    SelectItems(ul, ".letter").forEach(element => {
       isMatch = element.textContent.toLowerCase() == key;
       isMatch ? element.classList.add("show") : null;
       letterFound = letterFound || isMatch;
@@ -76,24 +71,23 @@ document.addEventListener("DOMContentLoaded", () => {
         const letterFound = checkLetter(char);
 
         const clearInput = () => {
-          looper(selectAllItems(ul, ".letter"), "clearInput");
-          looper(selectAllItems(qwerty, "button"), "resetKeys");
+          looper(SelectItems(ul, "li"), "clearInput");
+          looper(SelectItems(qwerty, "button"), "resetKeys");
           missed = 0;
         };
 
         const checkWin = () =>
-          selectAllItems(ul, ".letter").length ==
-          selectAllItems(ul, ".show").length;
+          SelectItems(ul, ".letter").length == SelectItems(ul, ".show").length;
 
         const resetGame = () => {
           clearInput();
-          looper(selectAllItems(ol, ".tries"), "hideTries");
+          looper(SelectItems(ol, ".tries"), "hideTries");
           addPhraseToDisplay(getRandomPhraseAsArray(phrases));
           prevSelected = [];
         };
 
         if (!letterFound) {
-          const tries = selectAllItems(ol, ".tries")[missed];
+          const tries = SelectItems(ol, ".tries")[missed];
           tries.style.opacity = ".5";
           missed += 1;
         }
@@ -114,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   startButton.addEventListener("click", () => {
-    looper(selectAllItems(ol, ".tries"), "refillTries");
+    looper(SelectItems(ol, ".tries"), "refillTries");
     styleOverlayDiv("", "none", "");
   });
 });
