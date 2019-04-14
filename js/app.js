@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const getRandomPhraseAsArray = arr =>
     arr[Math.floor(Math.random() * arr.length)].split("");
 
-  const SelectItems = (parent, item) => parent.querySelectorAll(item);
+  const selectItems = (parent, item) => parent.querySelectorAll(item);
 
   const looperAction = {
     addPhrase: element => {
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const checkLetter = key => {
     let letterFound;
-    SelectItems(ul, ".letter").forEach(element => {
+    selectItems(ul, ".letter").forEach(element => {
       isMatch = element.textContent.toLowerCase() == key;
       isMatch ? element.classList.add("show") : null;
       letterFound = letterFound || isMatch;
@@ -70,23 +70,23 @@ document.addEventListener("DOMContentLoaded", () => {
         const letterFound = checkLetter(char);
 
         const clearInput = () => {
-          looper(SelectItems(ul, "li"), "clearInput");
-          looper(SelectItems(qwerty, "button"), "resetKeys");
+          looper(selectItems(ul, "li"), "clearInput");
+          looper(selectItems(qwerty, "button"), "resetKeys");
           missed = 0;
         };
 
         const checkWin = () =>
-          SelectItems(ul, ".letter").length == SelectItems(ul, ".show").length;
+          selectItems(ul, ".letter").length == selectItems(ul, ".show").length;
 
         const resetGame = () => {     
           clearInput();
-          looper(SelectItems(ol, ".tries"), "hideTries");
+          looper(selectItems(ol, ".tries"), "hideTries");
           addPhraseToDisplay(getRandomPhraseAsArray(phrases));         
           prevSelected = [];
         };
 
         if (!letterFound) {
-          const tries = SelectItems(ol, ".tries")[missed];
+          const tries = selectItems(ol, ".tries")[missed];
           tries.style.opacity = ".5";
           missed += 1;
         }
@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   startButton.addEventListener("click", () => {
-    looper(SelectItems(ol, ".tries"), "refillTries");
+    looper(selectItems(ol, ".tries"), "refillTries");
     styleOverlayDiv("", "none", "");
   });
 });
