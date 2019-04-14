@@ -45,6 +45,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   addPhraseToDisplay(getRandomPhraseAsArray(phrases));
 
+  const styleOverlayDiv = (title, display, className) => {
+    header.textContent = title;
+    overlayDiv.style.display = display;
+    overlayDiv.className = className;
+  };
+
   const checkLetter = key => {
     let letterFound;
     SelectItems(ul, ".letter").forEach(element => {
@@ -55,19 +61,12 @@ document.addEventListener("DOMContentLoaded", () => {
     return letterFound;
   };
 
-  const styleOverlayDiv = (title, display, className) => {
-    header.textContent = title;
-    overlayDiv.style.display = display;
-    overlayDiv.className = className;
-  };
-
   qwerty.addEventListener("click", e => {
     if (e.target.tagName == "BUTTON") {
       const char = e.target.textContent;
       e.target.className = "chosen";
 
       if (!prevSelected.includes(char)) {
-        prevSelected.push(char);
         const letterFound = checkLetter(char);
 
         const clearInput = () => {
@@ -79,10 +78,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const checkWin = () =>
           SelectItems(ul, ".letter").length == SelectItems(ul, ".show").length;
 
-        const resetGame = () => {
+        const resetGame = () => {     
           clearInput();
           looper(SelectItems(ol, ".tries"), "hideTries");
-          addPhraseToDisplay(getRandomPhraseAsArray(phrases));
+          addPhraseToDisplay(getRandomPhraseAsArray(phrases));         
           prevSelected = [];
         };
 
@@ -103,6 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
           startButton.textContent = "Play Again";
           resetGame();
         }
+        prevSelected.push(char);
       }
     }
   });
