@@ -68,6 +68,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!prevSelected.includes(char)) {
         const letterFound = checkLetter(char);
+        prevSelected.push(char);
+        console.log(prevSelected);
 
         const clearInput = () => {
           looper(selectItems(ul, "li"), "clearInput");
@@ -102,7 +104,6 @@ document.addEventListener("DOMContentLoaded", () => {
           startButton.textContent = "Play Again";
           resetGame();
         }
-        prevSelected.push(char);
       }
     }
   });
