@@ -1,3 +1,4 @@
+'use strict';
 document.addEventListener("DOMContentLoaded", () => {
   const overlayDiv = document.getElementById("overlay");
   const header = document.querySelector("#overlay h2");
@@ -10,13 +11,13 @@ document.addEventListener("DOMContentLoaded", () => {
   let missed = 0;
   let prevSelected = [];
 
-  const phrases = [
+  const phrases = Object.freeze([
     "Fake news",
     "Twice Baked Irish Potato",
     "Neap Tide",
     "Soup Sandwich",
     "Witcha Ditcha"
-  ];
+  ]);
 
   const getRandomPhraseAsArray = arr =>
     arr[Math.floor(Math.random() * arr.length)].split("");
@@ -30,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
       li.appendChild(char);
       ul.appendChild(li);
       li.classList.add(element == " " ? "space" : "letter");
+      console.log(element);
     },
     refillTries: element => (element.style.opacity = "1"),
     hideTries: element => (element.style.opacity = "0"),
@@ -52,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const checkLetter = key => {
-    let letterFound;
+    let letterFound, isMatch;
     selectItems(ul, ".letter").forEach(element => {
       isMatch = element.textContent.toLowerCase() == key;
       isMatch ? element.classList.add("show") : null;
